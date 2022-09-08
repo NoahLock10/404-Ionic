@@ -1,0 +1,31 @@
+html{
+    height: 100%;
+    font-family: "Playfair Display";
+    color: black;
+}
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100vh;
+    background-image: linear-gradient(lightblue, white);
+    background-size: cover;
+    margin: auto;
+    animation-name: moveUp;
+    animation-duration: 2s;
+}
+.title{
+    text-align: center;
+}
+.map{
+    margin: auto;
+}
+.status{
+    color: green;
+    position: relative;
+    text-align: center;
+}
+@keyframes moveUp {
+    0%   {top: 150px;}
+    100% {top: 0px;}
+}
