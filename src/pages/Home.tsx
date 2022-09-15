@@ -1,11 +1,22 @@
 import './home.css';
-import './database.js';
 import { GoogleMap } from '@capacitor/google-maps';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { fetchData } from './AWSfunctions';
+import { DataRow } from '../components/Menu';
 
 const Home: React.FC = () => {
     const mapRef = useRef<HTMLElement>();
+    const apiEndpoint = './ApiConnection.tsx';
     let newMap: GoogleMap;
+    //const [data, setData] = useState<Array<DataRow>>([]);
+
+    const fetchDataFormDynamoDb = () => {
+      fetchData('Team12TestDyno')
+    }
+
+    // async function displayUsernames(){
+    //   return fetchDataFormDynamoDb[Symbol].Array.Username;
+    // }
   
     // function to call Google API to show user location
     async function createMap() {
@@ -32,13 +43,18 @@ const Home: React.FC = () => {
                 {/* Title on top of page */}
                 <h1><b>The 12th Man</b></h1>
             </div>
-            <div className="map" onLoad={createMap}>
+            <div>
+              <p>Fetch data: {fetchDataFormDynamoDb}</p>
+              <button onClick={() => fetchDataFormDynamoDb()}> Fetch </button>
+            </div>
+            <div className="map">
                 <capacitor-google-map ref={mapRef} style={{
                     display: 'inline-block', 
                     width: 275,
                     height: 400
                 }}>
                 </capacitor-google-map>
+                {/* <button onClick={() => createMap()}> Create Map </button> */}
             </div>
             <div className="status">
                 <h1><b>Status:</b></h1>

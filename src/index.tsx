@@ -4,6 +4,18 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
+//Connection to AWS Database
+import * as AWS from 'aws-sdk'
+import { ConfigurationOptions } from 'aws-sdk'
+
+const configuration: ConfigurationOptions = {
+    region: 'us-east-2',
+    secretAccessKey: 'f/ctxi9O3nXp1VKxKKPouGN3LrPdJF6fH7m2+1aN',
+    accessKeyId: 'AKIAYYRPTQEFSPKF75ME'
+}
+
+AWS.config.update(configuration)
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
