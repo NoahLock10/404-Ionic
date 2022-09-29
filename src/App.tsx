@@ -24,6 +24,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import Datainfo from './pages/datainfo';
 import Home from './pages/home';
+import Login from './pages/loginPersonal';
 // import AWSFunctions from './pages/AWSfunctions';
 
 setupIonicReact();
@@ -40,6 +41,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/page/home" component={Home}/>
             <Route path="/page/datainfo" component={Datainfo}/>
+            <Route path="/page/loginPersonal" component={Login}/>
             {/* <Route path="/page/AWSfunctions" component={AWSFunctions}/> */}
             {/* <Route path="/page/:name" exact={true}>
               <Page />

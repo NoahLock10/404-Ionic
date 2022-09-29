@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk'
-import { DataRow } from '../components/Menu';
+import { UserData } from '../components/Menu';
 
 const tableName = process.env.TABLE_NAME || '';
 
@@ -7,59 +7,22 @@ const docClient = new AWS.DynamoDB.DocumentClient({
     region: 'us-east-2',
     secretAccessKey: 'f/ctxi9O3nXp1VKxKKPouGN3LrPdJF6fH7m2+1aN',
     accessKeyId: 'AKIAYYRPTQEFSPKF75ME'
-})
+});
 
-// export const createResponse = (body: string | AWS.DynamoDB.DocumentClient.ItemList, statusCode = 200) => {
-//     return {
-//       statusCode,
-//       headers: {
-//         'Access-Control-Allow-Origin': '*',
-//         'Access-Control-Allow-Methods': 'OPTIONS,GET,POST,DELETE',
-//       },
-//       body: JSON.stringify(body, null, 2),
-//     };
-//   };
-  
-// export const getUsernames = async () => {
-//     const scanResult = await docClient.scan({ TableName: tableName }).promise();
-//     return scanResult;
-//   };
+export async function getTableData() {
+    let response = await fetch('https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items',{
+        //https://h80iqpndxg.execute-api.us-east-2.amazonaws.com/default
+        //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items
+        method: 'GET'
+    });
+    const myJson = await response.json(); //extract JSON from the http response
+    //console.log(myJson.Items);
+    return myJson.Items;
+}
 
-//   exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
-//     try {
-//       const { httpMethod, body: requestBody } = event;
-  
-//       if (httpMethod === 'GET') {
-//         const response = await getUsernames();
-//         return createResponse(response.Items || []);
-//       }
-  
-//       if (!requestBody) {
-//         return createResponse('Missing request body', 500);
-//       }
-  
-//       const data = JSON.parse(requestBody);
-  
-//     //   if (httpMethod === 'POST') {
-//     //     const dragon = await addDragonItem(data);
-//     //     return dragon
-//     //       ? createResponse(`${JSON.stringify(data)} added to the database`)
-//     //       : createResponse('Dragon is missing', 500);
-//     //   }
-  
-//     //   if (httpMethod === 'DELETE') {
-//     //     const dragon = await deleteDragonItem(data);
-//     //     return dragon
-//     //       ? createResponse(`${JSON.stringify(data)} deleted from the database`)
-//     //       : createResponse('Dragon is missing', 500);
-//     //   }
-  
-//       return createResponse('Ops, something wrong!', 500);
-//     } catch (error) {
-//       console.log(error);
-//       return createResponse('Handeler failed', 500);
-//     }
-//   };
+export const testExport = () => {
+    return 'Test Data'
+}
 
 export const fetchData = (tableName: any) => {
     var params = {
@@ -72,15 +35,9 @@ export const fetchData = (tableName: any) => {
             console.log('Error', err)
         }
         else if (!err) {
-            // console.log("Success", data);
-            // data.Items?.forEach(function(element, index, array) {
-            //     console.log(
-            //         "printing",
-            //         element.Title + " (" + element.Subtitle.S + ")"
-            //     )
-            // })
-            console.log(data)
-            return data
+            //console.log(data) //.Items?.[0].Username
+            //return "Test0"//data.Items?.[0].Username
+            return data.Items?.[0].Username
         }
     })
 

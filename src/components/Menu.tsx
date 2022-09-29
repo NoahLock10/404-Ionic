@@ -21,7 +21,7 @@ interface AppPage {
   title: string;
 }
 
-export interface DataRow {
+export interface UserData {
   UserID: number;
   Username: string;
 
@@ -38,10 +38,14 @@ const appPages: AppPage[] = [
     url: '/page/datainfo',
     iosIcon: mailOutline,
     mdIcon: mailSharp
+  },
+  {
+    title: 'Login',
+    url: '/page/loginPersonal',
+    iosIcon: mailOutline,
+    mdIcon: mailSharp
   }
 ];
-
-// const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FC = () => {
   const location = useLocation();

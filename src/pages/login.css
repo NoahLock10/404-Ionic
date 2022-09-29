@@ -1,0 +1,57 @@
+html{
+    height: 100%;
+  }
+  body{
+    background-image: linear-gradient(lightblue, white);
+    background-size: cover;
+  }
+  input{
+    padding: 10px;
+  }
+  #container-login {
+    padding-top: 10%;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #loginButton{
+    border: 1px ;
+    outline:none;
+    border-radius: 25px;
+    padding:15px;
+    font-size:2rem;
+    font-weight: bold;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    background:rgb(0, 168, 0);
+    color:white;
+    transition-duration: 0.4s;
+  }
+  #loginButton:hover{
+    background:rgb(0, 92, 0);
+  }
+  #messageRegister {
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 15px;
+  }
+  #messageRegister a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  #reg{
+    padding-left: 35%;
+    padding-right: 35%;
+  }
+  #register{
+    /* box-sizing: content-box;  
+    width: 300px;
+    height: 100px; */
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    border: 10px;
+    border-radius: 50px;
+    border-style: outset;
+  }

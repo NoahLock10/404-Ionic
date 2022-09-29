@@ -1,17 +1,44 @@
 import './home.css';
 import { GoogleMap } from '@capacitor/google-maps';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNodeArray, ReactPortal} from 'react';
 import { fetchData } from './AWSfunctions';
-import { DataRow } from '../components/Menu';
+import { UserData } from '../components/Menu';
+import { IonInput } from '@ionic/react';
+import { stringList } from 'aws-sdk/clients/datapipeline';
+import { testExport } from './AWSfunctions';
+import { getTableData } from './AWSfunctions';
+import { Json } from 'aws-sdk/clients/robomaker';
+
 
 const Home: React.FC = () => {
     const mapRef = useRef<HTMLElement>();
     const apiEndpoint = './ApiConnection.tsx';
     let newMap: GoogleMap;
-    //const [data, setData] = useState<Array<DataRow>>([]);
+    let testdata : Json;
+    let testString : string = '';
+    let users : Promise<any>;
 
-    const fetchDataFormDynamoDb = () => {
-      fetchData('Team12TestDyno')
+    interface ApiData {
+      UserID: number;
+      Username: string;
+    } 
+
+    const [userData, setUserData] = useState<ApiData[]>([]);
+    const names = []
+
+    useEffect(() => {
+      console.log('use effect is triggered.')
+      users = getTableData();
+      console.log(users);
+      users.then(data => setUserData(data));
+      createMap();
+    }, []) //adding the [] causes the useEffect to run once, else it will continue to run
+
+    let fetchDataFormDynamoDb = async () => {
+      users = getTableData();
+      //console.log(users);
+      users.then(f => console.log(f));
+      users.then(f => setUserData(f));
     }
 
     // async function displayUsernames(){
@@ -44,8 +71,21 @@ const Home: React.FC = () => {
                 <h1><b>The 12th Man</b></h1>
             </div>
             <div>
-              <p>Fetch data: {fetchDataFormDynamoDb}</p>
               <button onClick={() => fetchDataFormDynamoDb()}> Fetch </button>
+              <div>
+              <div>      
+                { userData.map(us => {        
+                    return (          
+                      <div key={us.UserID}>            
+                      <h2>name: {us.Username}</h2>                       
+                      <hr/>          
+                      </div>        
+                    );      
+                  })
+                } 
+                </div>
+              </div>
+              {/* <div >{JSON.stringify(employee)}</div> */}
             </div>
             <div className="map">
                 <capacitor-google-map ref={mapRef} style={{
@@ -54,7 +94,7 @@ const Home: React.FC = () => {
                     height: 400
                 }}>
                 </capacitor-google-map>
-                {/* <button onClick={() => createMap()}> Create Map </button> */}
+                <button onClick={() => createMap()}> Create Map </button>
             </div>
             <div className="status">
                 <h1><b>Status:</b></h1>
