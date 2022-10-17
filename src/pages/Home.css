@@ -1,6 +1,6 @@
 html{
     height: 100%;
-    font-family: "Playfair Display";
+    font-family: "Roboto";
     color: black;
 }
 .home {
@@ -15,12 +15,21 @@ html{
     animation-duration: 2s;
 }
 .title{
+    margin-top: 15%;
     text-align: center;
 }
 .map{
     margin: auto;
+    margin-top: 15%;
+}
+.dbData{
+    margin-bottom: 1%;
+    color: gray;
+    position: relative;
+    text-align: center;
 }
 .status{
+    margin-bottom: 15%;
     color: green;
     position: relative;
     text-align: center;

@@ -20,6 +20,37 @@ export async function getTableData() {
     return myJson.Items;
 }
 
+export async function getUsers() {
+    let response = await fetch('https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/users',{
+        //https://h80iqpndxg.execute-api.us-east-2.amazonaws.com/default
+        //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items
+        method: 'GET'
+    });
+    const myJson = await response.json(); //extract JSON from the http response
+    //console.log(myJson.Items);
+    return myJson.Items;
+}
+
+export async function registerUser() {
+    let response = await fetch('https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items',{
+        //https://h80iqpndxg.execute-api.us-east-2.amazonaws.com/default
+        //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items
+        method: 'PUT',
+        body: JSON.stringify(
+            { 
+                id: "Captain Anonymous",
+                uname: "",
+                pword: "",
+                fname: "",
+                lname: ""
+            }
+        )
+    });
+    const myJson = await response.json(); //extract JSON from the http response
+    //console.log(myJson.Items);
+    return myJson.Items;
+}
+
 export const testExport = () => {
     return 'Test Data'
 }

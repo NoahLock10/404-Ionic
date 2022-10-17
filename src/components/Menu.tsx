@@ -44,6 +44,12 @@ const appPages: AppPage[] = [
     url: '/page/loginPersonal',
     iosIcon: mailOutline,
     mdIcon: mailSharp
+  },
+  {
+    title: 'Register',
+    url: '/page/register',
+    iosIcon: mailOutline,
+    mdIcon: mailSharp
   }
 ];
 

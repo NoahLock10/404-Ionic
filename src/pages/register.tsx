@@ -1,12 +1,12 @@
-import './login.css';
+import './register.css';
 import { getTableData } from './AWSfunctions';
 import { getUsers } from './AWSfunctions';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect} from 'react';
 import Home from './home';
 import { Link } from 'react-router-dom';
 
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
 
     let users : Promise<any>;
 
@@ -42,11 +42,11 @@ const Login: React.FC = () => {
         <div id='container-login'>
             <div id='reg'>
                 <form id='register'>
-                    <h2 id='loginTitle'>Log In</h2>
+                    <h2 id='loginTitle'>Register</h2>
                     <input type='text' id='username' placeholder='Username' onInput={(e: any) => setUsername(e.target.value)}></input><br></br><br></br>
                     <input type='password' id='password' placeholder='Password' onInput={(e: any) => setPassword(e.target.value)}></input><br></br><br></br>
                     <button type='submit' id='loginButton' value='Submit' onClick={() => checkUser()}>Submit</button> <br></br>
-                    <Link to="/register" className="btn btn-primary">Not Registered?</Link>
+                    <Link to="/loginPersonal" className="btn btn-primary">Already Registered?</Link>
                 </form>
             </div>
         </div>  
@@ -54,4 +54,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default Register;

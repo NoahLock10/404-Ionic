@@ -1,5 +1,5 @@
 import './home.css';
-import { GoogleMap } from '@capacitor/google-maps';
+import { GoogleMap } from '@capacitor/google-maps'; //@capacitor-community/capacitor-googlemaps-native   @capacitor/google-maps
 import { useRef, useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNodeArray, ReactPortal} from 'react';
 import { fetchData } from './AWSfunctions';
 import { UserData } from '../components/Menu';
@@ -20,6 +20,8 @@ const Home: React.FC = () => {
 
     interface ApiData {
       UserID: number;
+      HeartRate: number;
+      Temperature: number;
       Username: string;
     } 
 
@@ -58,9 +60,15 @@ const Home: React.FC = () => {
             lat: 30.601389,
             lng: -96.314445
           },
-          zoom: 8
+          zoom: 14
         }
-      })
+      });
+      newMap.addMarker({
+        coordinate:{
+          lat: 30.601389,
+          lng: -96.314445,
+        }
+      });
     }
 
     return(
@@ -71,7 +79,7 @@ const Home: React.FC = () => {
                 <h1><b>The 12th Man</b></h1>
             </div>
             <div>
-              <button onClick={() => fetchDataFormDynamoDb()}> Fetch </button>
+              {/* <button onClick={() => fetchDataFormDynamoDb()}> Fetch </button>
               <div>
               <div>      
                 { userData.map(us => {        
@@ -84,21 +92,35 @@ const Home: React.FC = () => {
                   })
                 } 
                 </div>
-              </div>
-              {/* <div >{JSON.stringify(employee)}</div> */}
+              </div> */}
             </div>
             <div className="map">
                 <capacitor-google-map ref={mapRef} style={{
                     display: 'inline-block', 
                     width: 275,
-                    height: 400
+                    height: 300
                 }}>
                 </capacitor-google-map>
-                <button onClick={() => createMap()}> Create Map </button>
+                {/* <button onClick={() => createMap()}> Create Map </button> */}
+            </div>
+            <div className='dbData'>
+              { userData.map(us => {
+                  if(us.UserID == 1){  
+                  return (          
+                    <div key={us.UserID}>            
+                    <h2>Temperature: {us.Temperature}</h2>                       
+                    <hr/>
+                    <h2>Heart Rate: {us.HeartRate}</h2>        
+                    </div>        
+
+                  );
+                  }      
+                })
+              }
             </div>
             <div className="status">
-                <h1><b>Status:</b></h1>
-                <h1><b>Stable</b></h1>
+                <h1><b>Status: Stable</b></h1>
+                {/* <h1><b>Stable</b></h1> */}
             </div>
         </div>
         </>

@@ -25,6 +25,7 @@ import './theme/variables.css';
 import Datainfo from './pages/datainfo';
 import Home from './pages/home';
 import Login from './pages/loginPersonal';
+import Register from './pages/register';
 // import AWSFunctions from './pages/AWSfunctions';
 
 setupIonicReact();
@@ -33,6 +34,8 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
+        <Route path="/loginPersonal" component={Login}></Route>
+        <Route path="/register" component={Register}></Route>
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
@@ -42,6 +45,7 @@ const App: React.FC = () => {
             <Route path="/page/home" component={Home}/>
             <Route path="/page/datainfo" component={Datainfo}/>
             <Route path="/page/loginPersonal" component={Login}/>
+            <Route path="/page/register" component={Register}></Route>
             {/* <Route path="/page/AWSfunctions" component={AWSFunctions}/> */}
             {/* <Route path="/page/:name" exact={true}>
               <Page />
