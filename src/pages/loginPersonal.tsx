@@ -1,10 +1,11 @@
 import './login.css';
 import { getTableData } from './AWSfunctions';
 import { getUsers } from './AWSfunctions';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, MouseEvent } from 'react';
 import Home from './home';
-import { Link } from 'react-router-dom';
+import { Link, Redirect} from 'react-router-dom';
 
+export var someID: string;
 
 const Login: React.FC = () => {
 
@@ -21,6 +22,9 @@ const Login: React.FC = () => {
     const [userData, setUserData] = useState<ApiDataUserInfo[]>([]);
     const [usernameInput, setUsername] = useState("");
     const [passwordInput, setPassword] = useState("");
+    const [goHome, setgoHome] = useState(false);
+    const [submitBtn, setSubmitBtn] = useState(true);
+
 
     useEffect(() => {
         console.log('use effect is triggered.')
@@ -29,10 +33,15 @@ const Login: React.FC = () => {
         users.then(data => setUserData(data));
     }, [])
 
-    async function checkUser(){
+    async function checkUser(e: any){
+        e.preventDefault();
         for(let i=0; i<userData.length; i++){
             if(userData[i].username === usernameInput && userData[i].password === passwordInput){
-                return true;
+                console.log("Logged IN");
+                someID = userData[i].username;
+                console.log("UserID: ", someID)
+                setgoHome(true);
+                setSubmitBtn(false);
             }
         } 
     }
@@ -45,8 +54,10 @@ const Login: React.FC = () => {
                     <h2 id='loginTitle'>Log In</h2>
                     <input type='text' id='username' placeholder='Username' onInput={(e: any) => setUsername(e.target.value)}></input><br></br><br></br>
                     <input type='password' id='password' placeholder='Password' onInput={(e: any) => setPassword(e.target.value)}></input><br></br><br></br>
-                    <button type='submit' id='loginButton' value='Submit' onClick={() => checkUser()}>Submit</button> <br></br>
-                    <Link to="/register" className="btn btn-primary">Not Registered?</Link>
+                    {submitBtn ? <><button type='submit' id='loginButton' onClick={(e) => checkUser(e)}>Submit</button> <br></br></> : null}
+                    {goHome ? <LoggedIn/> : null}
+                    <br></br>
+                    <Link to="/page/register" className="btn btn-primary">Not Registered?</Link>
                 </form>
             </div>
         </div>  
@@ -54,4 +65,19 @@ const Login: React.FC = () => {
     );
 };
 
+const LoggedIn: React.FC = () => {
+    const linkStyle = {
+        color: 'white',
+        textDecoration: 'none'
+    };
+
+    return(
+        <button id='loginButton'>
+        <Link to="/page/home" style={linkStyle}>Logged In Click Here!</Link>
+        </button>
+    )
+}
+
 export default Login;
+
+

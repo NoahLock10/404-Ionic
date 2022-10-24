@@ -10,9 +10,10 @@ const docClient = new AWS.DynamoDB.DocumentClient({
 });
 
 export async function getTableData() {
-    let response = await fetch('https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items',{
-        //https://h80iqpndxg.execute-api.us-east-2.amazonaws.com/default
-        //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items
+    let response = await fetch('https://09480ffay6.execute-api.us-east-2.amazonaws.com/beta/items',{
+        //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items  Noah's
+        //https://09480ffay6.execute-api.us-east-2.amazonaws.com/beta/items  Jason's
+
         method: 'GET'
     });
     const myJson = await response.json(); //extract JSON from the http response
@@ -22,33 +23,21 @@ export async function getTableData() {
 
 export async function getUsers() {
     let response = await fetch('https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/users',{
-        //https://h80iqpndxg.execute-api.us-east-2.amazonaws.com/default
-        //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items
         method: 'GET'
     });
     const myJson = await response.json(); //extract JSON from the http response
-    //console.log(myJson.Items);
+    console.log(myJson.Items);
     return myJson.Items;
 }
 
-export async function registerUser() {
+export async function registerUser(data = {}) {
     let response = await fetch('https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items',{
-        //https://h80iqpndxg.execute-api.us-east-2.amazonaws.com/default
-        //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items
         method: 'PUT',
-        body: JSON.stringify(
-            { 
-                id: "Captain Anonymous",
-                uname: "",
-                pword: "",
-                fname: "",
-                lname: ""
-            }
-        )
+        body: JSON.stringify(data)
     });
-    const myJson = await response.json(); //extract JSON from the http response
-    //console.log(myJson.Items);
-    return myJson.Items;
+    console.log(data);
+    console.log(response.status);
+    return response.json();
 }
 
 export const testExport = () => {

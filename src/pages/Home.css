@@ -3,6 +3,10 @@ html{
     font-family: "Roboto";
     color: black;
 }
+.username{
+    text-align: right;
+    margin-right: 5%;
+}
 .home {
     display: flex;
     flex-direction: column;
@@ -15,12 +19,13 @@ html{
     animation-duration: 2s;
 }
 .title{
-    margin-top: 15%;
+    margin-top: 1%;
     text-align: center;
 }
 .map{
     margin: auto;
-    margin-top: 15%;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 .dbData{
     margin-bottom: 1%;
@@ -29,7 +34,7 @@ html{
     text-align: center;
 }
 .status{
-    margin-bottom: 15%;
+    margin-bottom: 30%;
     color: green;
     position: relative;
     text-align: center;

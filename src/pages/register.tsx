@@ -1,26 +1,27 @@
 import './register.css';
-import { getTableData } from './AWSfunctions';
+import { registerUser } from './AWSfunctions';
 import { getUsers } from './AWSfunctions';
-import { useRef, useState, useEffect} from 'react';
+import { useRef, useState, useEffect, MouseEvent} from 'react';
 import Home from './home';
 import { Link } from 'react-router-dom';
-
+import { stringify } from 'querystring';
 
 const Register: React.FC = () => {
 
     let users : Promise<any>;
 
     interface ApiDataUserInfo {
-      userID: number;
       firstName: string;
       lastName: string;
       password: string;
       username: string;
-    } 
+    }
 
     const [userData, setUserData] = useState<ApiDataUserInfo[]>([]);
     const [usernameInput, setUsername] = useState("");
     const [passwordInput, setPassword] = useState("");
+    const [fnameInput, setFname] = useState("");
+    const [lnameInput, setLname] = useState("");
 
     useEffect(() => {
         console.log('use effect is triggered.')
@@ -29,12 +30,25 @@ const Register: React.FC = () => {
         users.then(data => setUserData(data));
     }, [])
 
-    async function checkUser(){
-        for(let i=0; i<userData.length; i++){
-            if(userData[i].username === usernameInput && userData[i].password === passwordInput){
-                return true;
-            }
-        } 
+    let idNum = 0;
+
+    function resetUsers() {
+        users = getUsers();
+        users.then(data => setUserData(data));
+        idNum = Number(userData.length);
+    }
+
+    function registerUserInfo(e: any){
+        e.preventDefault();
+        resetUsers();
+        console.log(idNum); //change idNum passed on database list, right now lagging behind
+        registerUser({
+            id: idNum,
+            uname: usernameInput,
+            pword: passwordInput,
+            fname: fnameInput,
+            lname: lnameInput
+        });
     }
 
     return(
@@ -45,8 +59,10 @@ const Register: React.FC = () => {
                     <h2 id='loginTitle'>Register</h2>
                     <input type='text' id='username' placeholder='Username' onInput={(e: any) => setUsername(e.target.value)}></input><br></br><br></br>
                     <input type='password' id='password' placeholder='Password' onInput={(e: any) => setPassword(e.target.value)}></input><br></br><br></br>
-                    <button type='submit' id='loginButton' value='Submit' onClick={() => checkUser()}>Submit</button> <br></br>
-                    <Link to="/loginPersonal" className="btn btn-primary">Already Registered?</Link>
+                    <input type='text' id='fname' placeholder='First Name' onInput={(e: any) => setFname(e.target.value)}></input><br></br><br></br>
+                    <input type='text' id='lname' placeholder='Last Name' onInput={(e: any) => setLname(e.target.value)}></input><br></br><br></br>
+                    <button id='loginButton' onClick={(e) => registerUserInfo(e)}>Submit</button> <br></br>
+                    <Link to="/page/loginPersonal" className="btn btn-primary">Already Registered?</Link>
                 </form>
             </div>
         </div>  
