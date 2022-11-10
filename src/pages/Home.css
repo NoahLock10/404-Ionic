@@ -3,10 +3,6 @@ html{
     font-family: "Roboto";
     color: black;
 }
-.username{
-    text-align: right;
-    margin-right: 5%;
-}
 .home {
     display: flex;
     flex-direction: column;
@@ -18,24 +14,31 @@ html{
     animation-name: moveUp;
     animation-duration: 2s;
 }
+.username{
+    text-align: right;
+    margin-right: 5%;
+}
 .title{
-    margin-top: 1%;
     text-align: center;
 }
 .map{
     margin: auto;
     margin-top: 5%;
-    margin-bottom: 5%;
+    margin-bottom: 1%;
 }
 .dbData{
-    margin-bottom: 1%;
+    margin-bottom: 15%;
     color: gray;
     position: relative;
     text-align: center;
 }
-.status{
-    margin-bottom: 30%;
+.prediction{
     color: green;
+    position: relative;
+    text-align: center;
+}
+.meltdown{
+    color: red;
     position: relative;
     text-align: center;
 }

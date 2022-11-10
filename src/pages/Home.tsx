@@ -1,19 +1,21 @@
 import './home.css';
 import { GoogleMap } from '@capacitor/google-maps'; //@capacitor-community/capacitor-googlemaps-native   @capacitor/google-maps
 import { useRef, useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNodeArray, ReactPortal} from 'react';
-import { fetchData } from './AWSfunctions';
-import { UserData } from '../components/Menu';
 import { IonInput } from '@ionic/react';
-import { stringList } from 'aws-sdk/clients/datapipeline';
 import { getTableData } from './AWSfunctions';
 import { Json } from 'aws-sdk/clients/robomaker';
 import { someID } from './loginPersonal';
+import emailjs from '@emailjs/browser';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 
 /*pass varable and rerender to get variable
 re render very x(60-120) second to pull the most accurate data
 notification for meltdown
 */
+
+const personUserName = someID;
 
 const Home: React.FC = () => {
     const mapRef = useRef<HTMLElement>();
@@ -39,27 +41,56 @@ const Home: React.FC = () => {
     }
 
     const [userData, setUserData] = useState<ApiData[]>([]);
-    const names = []
+    const [meltdown, setMeltdown] = useState(false);
+    const [stable, setStable] = useState(true);
+    const names = [];
 
     useEffect(() => {
-      console.log('use effect is triggered.')
-      users = getTableData();
-      console.log(users);
-      console.log("User ID: ", someID);
-      users.then(data => setUserData(data));
-      createMap();
+      // console.log('use effect is triggered.')
+      // users = getTableData();
+      // console.log(users);
+      // console.log("User ID: ", someID);
+      // users.then(data => setUserData(data));
+      // createMap();
+      const interval = setInterval (() => {
+        users = getTableData();
+        users.then(data => setUserData(data));
+        setTimeout(createMap, 5000)
+        for(var i=0; i<userData.length; i++){
+          if(userData[i].id == someID + '0' && Math.round(parseFloat(userData[i].prediction))*100 > 90){
+            sendEmail();
+            setMeltdown(true);
+            setStable(false);
+          }
+          else if(userData[i].id == someID + '0' && Math.round(parseFloat(userData[i].prediction))*100 < 90){
+            setMeltdown(false);
+            setStable(true);
+          }
+        }
+        countInter();
+      }, 10000);
+      return () => clearInterval(interval);
     }, []) //adding the [] causes the useEffect to run once, else it will continue to run
 
-    let fetchDataFormDynamoDb = async () => {
-      users = getTableData();
-      //console.log(users);
-      users.then(f => console.log(f));
-      users.then(f => setUserData(f));
-    }
+    let inter = 0;
 
-    // async function displayUsernames(){
-    //   return fetchDataFormDynamoDb[Symbol].Array.Username;
-    // }
+    const sendEmail = () => {
+  
+      emailjs.send("service_oipgrfz","template_038hpj8",{
+        email_to: "noahlock@tamu.edu",
+        reply_to: "Test",
+        }, "m1pFeVP3TNq7RkCeU")
+        .then((result) => {
+            console.log(result.text);
+        }, (error) => {
+            console.log(error.text);
+        });
+    };
+    
+    function countInter(){
+      inter++;
+      console.log("Interval:" + inter)
+    }
   
     // function to call Google API to show user location
     async function createMap() {
@@ -69,7 +100,7 @@ const Home: React.FC = () => {
       var longUse = -96.314445;
 
       for(let i=0; i<userData.length; i++){
-        if(userData[i].id == 'jason_v0'){
+        if(userData[i].id === (personUserName + '0')){
           console.log("Coordinates changed")
           latUse = parseFloat(userData[i].latitude);
           longUse = parseFloat(userData[i].longitude);
@@ -100,12 +131,13 @@ const Home: React.FC = () => {
         <>
         <div className="home">
             <div className='username'>
-              <h1>User ID: {someID}</h1>
+              <h5>User ID: {someID}</h5>
             </div>
             <div className="title">
                 {/* Title on top of page */}
                 <h1><b>The 12th Man</b></h1>
             </div>
+            {/* <button onClick={() =>sendEmail()}></button> */}
             <div className="map">
                 <capacitor-google-map ref={mapRef} style={{
                     display: 'inline-block', 
@@ -117,14 +149,16 @@ const Home: React.FC = () => {
             </div>
             <div className='dbData'>
               { userData.map(us => {
-                  if(us.id == 'jason_v0'){  
+                  if(us.id ===(someID + '_v0')){  
                   return (          
                     <div key={us.id}>            
-                    <h2>Temperature: {Math.round(parseFloat(us.temperature))}F</h2>                       
+                    <h2>Temperature: {Math.round(parseFloat(us.temperature))} &deg;F</h2>                       
                     <hr/>
                     <h2>Heart Rate: {Math.round(parseFloat(us.heart_rate))} BPM</h2>
                     <hr/>
-                    <h2>Prediction: {us.prediction}</h2>
+                    {stable ? <><h2 className='prediction'>Prediction: {Math.round(parseFloat(us.prediction)) * 100}%</h2></> : null}
+                    {meltdown ? <><h2 className='meltdown'>Prediction: {Math.round(parseFloat(us.prediction)) * 100}%</h2>
+                    <hr/><h2 className='meltdown'>MELTDOWN PREDICTED</h2></> : null}
                     </div>
                   );
                   }      

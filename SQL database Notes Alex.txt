@@ -1,0 +1,7 @@
+Python Lambda function
+https://pynative.com/python-mysql-select-query-to-fetch-data/
+
+SQL pull most recent data
+select *from getLastRecord ORDER BY id DESC LIMIT 1;
+
+When posting to db order is IMPORTANT
