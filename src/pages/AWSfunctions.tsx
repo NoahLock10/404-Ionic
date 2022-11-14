@@ -10,7 +10,7 @@ const docClient = new AWS.DynamoDB.DocumentClient({
 });
 
 export async function getTableData() {
-    let response = await fetch('https://09480ffay6.execute-api.us-east-2.amazonaws.com/beta/items',{
+    let response = await fetch('https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items',{
         //https://apyo54kvla.execute-api.us-east-2.amazonaws.com/beta/items  Noah's
         //https://09480ffay6.execute-api.us-east-2.amazonaws.com/beta/items  Jason's
         method: 'GET'

@@ -16,6 +16,8 @@ notification for meltdown
 */
 
 const personUserName = someID;
+var latat = 30.601389;
+var longat = -96.314445;
 
 const Home: React.FC = () => {
     const mapRef = useRef<HTMLElement>();
@@ -55,14 +57,14 @@ const Home: React.FC = () => {
       const interval = setInterval (() => {
         users = getTableData();
         users.then(data => setUserData(data));
-        setTimeout(createMap, 5000)
+        setTimeout(createMap, 5000);
         for(var i=0; i<userData.length; i++){
-          if(userData[i].id == someID + '0' && Math.round(parseFloat(userData[i].prediction))*100 > 90){
+          if(userData[i].id === (someID + '0') && Math.round(parseFloat(userData[i].prediction))*100 > 90){
             sendEmail();
             setMeltdown(true);
             setStable(false);
           }
-          else if(userData[i].id == someID + '0' && Math.round(parseFloat(userData[i].prediction))*100 < 90){
+          else if(userData[i].id === (someID + '0') && Math.round(parseFloat(userData[i].prediction))*100 < 90){
             setMeltdown(false);
             setStable(true);
           }
@@ -99,13 +101,19 @@ const Home: React.FC = () => {
       var latUse = 30.601389;
       var longUse = -96.314445;
 
-      for(let i=0; i<userData.length; i++){
-        if(userData[i].id === (personUserName + '0')){
-          console.log("Coordinates changed")
-          latUse = parseFloat(userData[i].latitude);
-          longUse = parseFloat(userData[i].longitude);
-        }
-      }
+      console.log(latat);
+      console.log(longat);
+
+      // for(var _i=0; _i<10; _i++){
+      //   // console.log("Inside Map For loop");
+      //   // console.log(userData[_i].id);
+      //   if(userData[_i].id === (someID + '_v0')){
+      //     console.log("Coordinates changed");
+      //     latUse = parseFloat(userData[_i].latitude);
+      //     longUse = parseFloat(userData[_i].longitude);
+      //   }
+      // }
+      console.log("Got here in createMap");
   
       newMap = await GoogleMap.create({
         id: 'my-cool-map',
@@ -113,16 +121,16 @@ const Home: React.FC = () => {
         apiKey: 'AIzaSyC08mZyYhKYGM8wJN-9O3eCKGDo4T9V63s',
         config: {
           center: {
-            lat: latUse,
-            lng: longUse
+            lat: latat,
+            lng: longat
           },
           zoom: 14
         }
       });
       newMap.addMarker({
         coordinate:{
-          lat: latUse,
-          lng: longUse,
+          lat: latat,
+          lng: longat,
         }
       });
     }
@@ -149,7 +157,10 @@ const Home: React.FC = () => {
             </div>
             <div className='dbData'>
               { userData.map(us => {
-                  if(us.id ===(someID + '_v0')){  
+                  if(us.id ===(someID + '0')){ 
+                    latat = parseFloat(us.latitude);
+                    longat = parseFloat(us.longitude);
+                    console.log ("New Lat: " + latat); 
                   return (          
                     <div key={us.id}>            
                     <h2>Temperature: {Math.round(parseFloat(us.temperature))} &deg;F</h2>                       
@@ -161,7 +172,7 @@ const Home: React.FC = () => {
                     <hr/><h2 className='meltdown'>MELTDOWN PREDICTED</h2></> : null}
                     </div>
                   );
-                  }      
+                  } 
                 })
               }
               {/* <h1><b>Stable</b></h1> */}
