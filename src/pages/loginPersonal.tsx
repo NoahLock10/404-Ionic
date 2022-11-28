@@ -6,6 +6,7 @@ import Home from './home';
 import { Link, Redirect} from 'react-router-dom';
 
 export var someID: string;
+export var someEmail: string;
 
 const Login: React.FC = () => {
 
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
 
     interface ApiDataUserInfo {
       userID: number;
+      email: string;
       firstName: string;
       lastName: string;
       password: string;
@@ -39,6 +41,7 @@ const Login: React.FC = () => {
             if(userData[i].username === usernameInput && userData[i].password === passwordInput){
                 console.log("Logged IN");
                 someID = userData[i].username;
+                someEmail = userData[i].email;
                 console.log("UserID: ", someID)
                 setgoHome(true);
                 setSubmitBtn(false);

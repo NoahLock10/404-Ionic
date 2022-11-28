@@ -11,6 +11,7 @@ const Register: React.FC = () => {
     let users : Promise<any>;
 
     interface ApiDataUserInfo {
+      email: string;
       firstName: string;
       lastName: string;
       password: string;
@@ -22,6 +23,10 @@ const Register: React.FC = () => {
     const [passwordInput, setPassword] = useState("");
     const [fnameInput, setFname] = useState("");
     const [lnameInput, setLname] = useState("");
+    const [emailInput, setEmail] = useState("");
+
+    const [goLogin, setgoLogin] = useState(false);
+    const [submitBtn, setSubmitBtn] = useState(true);
 
     useEffect(() => {
         console.log('use effect is triggered.')
@@ -41,14 +46,16 @@ const Register: React.FC = () => {
     function registerUserInfo(e: any){
         e.preventDefault();
         resetUsers();
-        console.log(idNum); //change idNum passed on database list, right now lagging behind
         registerUser({
             id: idNum,
             uname: usernameInput,
             pword: passwordInput,
             fname: fnameInput,
-            lname: lnameInput
+            lname: lnameInput,
+            email: emailInput
         });
+        setgoLogin(true);
+        setSubmitBtn(false);
     }
 
     return(
@@ -61,7 +68,9 @@ const Register: React.FC = () => {
                     <input type='password' id='password' placeholder='Password' onInput={(e: any) => setPassword(e.target.value)}></input><br></br><br></br>
                     <input type='text' id='fname' placeholder='First Name' onInput={(e: any) => setFname(e.target.value)}></input><br></br><br></br>
                     <input type='text' id='lname' placeholder='Last Name' onInput={(e: any) => setLname(e.target.value)}></input><br></br><br></br>
-                    <button id='loginButton' onClick={(e) => registerUserInfo(e)}>Submit</button> <br></br>
+                    <input type='text' id='email' placeholder='Email' onInput={(e: any) => setEmail(e.target.value)}></input><br></br><br></br>
+                    {submitBtn ? <><button id='loginButton' onClick={(e) => registerUserInfo(e)}>Submit</button> <br></br></> : null}
+                    {goLogin ? <LoggedIn/> : null}
                     <Link to="/page/loginPersonal" className="btn btn-primary">Already Registered?</Link>
                 </form>
             </div>
@@ -69,5 +78,18 @@ const Register: React.FC = () => {
         </>
     );
 };
+
+const LoggedIn: React.FC = () => {
+    const linkStyle = {
+        color: 'white',
+        textDecoration: 'none'
+    };
+
+    return(
+        <button id='loginButton'>
+        <Link to="/page/loginPersonal" style={linkStyle}>Resistered!, Go to Login</Link>
+        </button>
+    )
+}
 
 export default Register;

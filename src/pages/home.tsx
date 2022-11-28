@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, JSXElementConstructor, Key, ReactElement, 
 import { IonInput } from '@ionic/react';
 import { getTableData } from './AWSfunctions';
 import { Json } from 'aws-sdk/clients/robomaker';
-import { someID } from './loginPersonal';
+import { someID, someEmail} from './loginPersonal';
 import emailjs from '@emailjs/browser';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -26,6 +26,8 @@ const Home: React.FC = () => {
     let testdata : Json;
     let testString : string = '';
     let users : Promise<any>;
+    let meltdownBool = false;
+    let stableBool = true;
 
     interface ApiData {
       //Noah's DB
@@ -58,17 +60,7 @@ const Home: React.FC = () => {
         users = getTableData();
         users.then(data => setUserData(data));
         setTimeout(createMap, 5000);
-        for(var i=0; i<userData.length; i++){
-          if(userData[i].id === (someID + '0') && Math.round(parseFloat(userData[i].prediction))*100 > 90){
-            sendEmail();
-            setMeltdown(true);
-            setStable(false);
-          }
-          else if(userData[i].id === (someID + '0') && Math.round(parseFloat(userData[i].prediction))*100 < 90){
-            setMeltdown(false);
-            setStable(true);
-          }
-        }
+        console.log("Meltdown is: " + meltdownBool);
         countInter();
       }, 10000);
       return () => clearInterval(interval);
@@ -76,22 +68,32 @@ const Home: React.FC = () => {
 
     let inter = 0;
 
-    const sendEmail = () => {
-  
+    function sendEmail(){
       emailjs.send("service_oipgrfz","template_038hpj8",{
-        email_to: "noahlock@tamu.edu",
-        reply_to: "Test",
+        email_to: someEmail,
+        reply_to: someID,
         }, "m1pFeVP3TNq7RkCeU")
         .then((result) => {
             console.log(result.text);
         }, (error) => {
             console.log(error.text);
         });
+      console.log("In Email");  
     };
     
     function countInter(){
       inter++;
       console.log("Interval:" + inter)
+    }
+
+    function meltdownCall(){
+      meltdownBool = true;
+      stableBool = false;
+    }
+
+    function stableCall(){
+      meltdownBool = false;
+      stableBool = true;
     }
   
     // function to call Google API to show user location
@@ -113,8 +115,6 @@ const Home: React.FC = () => {
       //     longUse = parseFloat(userData[_i].longitude);
       //   }
       // }
-      console.log("Got here in createMap");
-  
       newMap = await GoogleMap.create({
         id: 'my-cool-map',
         element: mapRef.current,
@@ -144,8 +144,8 @@ const Home: React.FC = () => {
             <div className="title">
                 {/* Title on top of page */}
                 <h1><b>The 12th Man</b></h1>
+                {/* <button onClick = {() => sendEmail()}> Click Email</button> */}
             </div>
-            {/* <button onClick={() =>sendEmail()}></button> */}
             <div className="map">
                 <capacitor-google-map ref={mapRef} style={{
                     display: 'inline-block', 
@@ -157,18 +157,28 @@ const Home: React.FC = () => {
             </div>
             <div className='dbData'>
               { userData.map(us => {
-                  if(us.id ===(someID + '0')){ 
+                  if(us.id ===(someID + '_v5')){
                     latat = parseFloat(us.latitude);
                     longat = parseFloat(us.longitude);
-                    console.log ("New Lat: " + latat); 
+                    console.log ("New Lat: " + latat);
+                    console.log ("Location " + us.id);
+                    if(Math.round(parseFloat(us.prediction)*100) >= 90){
+                      console.log("Meltdown True");
+                      meltdownCall();
+                      sendEmail();
+                    }
+                    else if(Math.round(parseFloat(us.prediction)*100) < 90){
+                      console.log("Meltdown false");
+                      stableCall();
+                    }
                   return (          
                     <div key={us.id}>            
                     <h2>Temperature: {Math.round(parseFloat(us.temperature))} &deg;F</h2>                       
                     <hr/>
                     <h2>Heart Rate: {Math.round(parseFloat(us.heart_rate))} BPM</h2>
                     <hr/>
-                    {stable ? <><h2 className='prediction'>Prediction: {Math.round(parseFloat(us.prediction)) * 100}%</h2></> : null}
-                    {meltdown ? <><h2 className='meltdown'>Prediction: {Math.round(parseFloat(us.prediction)) * 100}%</h2>
+                    {stableBool ? <><h2 className='prediction'>Prediction: {Math.round(parseFloat(us.prediction) * 100)}%</h2></> : null}
+                    {meltdownBool ? <><h2 className='meltdown'>Prediction: {Math.round(parseFloat(us.prediction) * 100)}%</h2>
                     <hr/><h2 className='meltdown'>MELTDOWN PREDICTED</h2></> : null}
                     </div>
                   );
