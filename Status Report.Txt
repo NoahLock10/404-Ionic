@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [TwelfthMan.PrjPcb]
+   Generated File[TwelfthManPCB.TXT]
+   Generated File[TwelfthManPCB.LDP]
+   Generated File[TwelfthManPCB.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 12:01:49 PM On 9/15/2022
