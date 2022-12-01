@@ -1,0 +1,44 @@
+08/25/2022
+1. Verify PCB Design for battery charger, boost converter, and MOSFET
+
+
+09/01/2022
+1. Verify PCB Layout for battery charger, boost converter, and MOSFET
+
+09/08/2022
+1. Buy all componenets for PCB
+
+9/15/2022
+1. Gather equipment for PCB assembly and testing
+
+9/22/2022
+1. Begin soldering PCB
+
+9/29/2022
+1. Finish soldering PCB
+2. Individually test each componenet on board for continuity
+3. Test step up voltage operation
+4. Test output current with electronic load
+
+10/6/2022
+1. Test Battery Charging operation
+2. Test load switch method
+3. Integreate with microcontroller after testing with seperate loads
+
+10/13/2022
+1. Test pcb with fully integreated system
+
+10/20/2022
+1. Help design enclosure method for PCB
+
+10/27/2022
+1. Test PCB to make sure it is upholding operation
+
+11/03/2022
+1. Continue to monitor operation to have our project handheld and operational 
+
+11/10/2022
+1. Ensuring PCB is clean and checking for continuity points.
+
+11/17/2022
+1. Help ensure system is fully integrated.
