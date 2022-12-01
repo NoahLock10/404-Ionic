@@ -18,6 +18,7 @@ notification for meltdown
 const personUserName = someID;
 var latat = 30.601389;
 var longat = -96.314445;
+var mapFail = false;
 
 const Home: React.FC = () => {
     const mapRef = useRef<HTMLElement>();
@@ -50,12 +51,6 @@ const Home: React.FC = () => {
     const names = [];
 
     useEffect(() => {
-      // console.log('use effect is triggered.')
-      // users = getTableData();
-      // console.log(users);
-      // console.log("User ID: ", someID);
-      // users.then(data => setUserData(data));
-      // createMap();
       const interval = setInterval (() => {
         users = getTableData();
         users.then(data => setUserData(data));
@@ -77,8 +72,7 @@ const Home: React.FC = () => {
             console.log(result.text);
         }, (error) => {
             console.log(error.text);
-        });
-      console.log("In Email");  
+        });  
     };
     
     function countInter(){
@@ -103,18 +97,6 @@ const Home: React.FC = () => {
       var latUse = 30.601389;
       var longUse = -96.314445;
 
-      console.log(latat);
-      console.log(longat);
-
-      // for(var _i=0; _i<10; _i++){
-      //   // console.log("Inside Map For loop");
-      //   // console.log(userData[_i].id);
-      //   if(userData[_i].id === (someID + '_v0')){
-      //     console.log("Coordinates changed");
-      //     latUse = parseFloat(userData[_i].latitude);
-      //     longUse = parseFloat(userData[_i].longitude);
-      //   }
-      // }
       newMap = await GoogleMap.create({
         id: 'my-cool-map',
         element: mapRef.current,
@@ -127,6 +109,9 @@ const Home: React.FC = () => {
           zoom: 14
         }
       });
+      if(newMap == null){
+        mapFail = true;
+      }
       newMap.addMarker({
         coordinate:{
           lat: latat,
@@ -153,15 +138,14 @@ const Home: React.FC = () => {
                     height: 300
                 }}>
                 </capacitor-google-map>
+                { stableBool ? <><h2>Map API Error</h2></> : null}
                 {/* <button onClick={() => createMap()}> Create Map </button> */}
             </div>
             <div className='dbData'>
               { userData.map(us => {
-                  if(us.id ===(someID + '_v5')){
+                  if(us.id ===(someID + '_v0')){
                     latat = parseFloat(us.latitude);
                     longat = parseFloat(us.longitude);
-                    console.log ("New Lat: " + latat);
-                    console.log ("Location " + us.id);
                     if(Math.round(parseFloat(us.prediction)*100) >= 90){
                       console.log("Meltdown True");
                       meltdownCall();
@@ -170,6 +154,9 @@ const Home: React.FC = () => {
                     else if(Math.round(parseFloat(us.prediction)*100) < 90){
                       console.log("Meltdown false");
                       stableCall();
+                    }
+                    if(us.temperature == null){
+                      return(<><h2>Database Not Connected</h2></>);
                     }
                   return (          
                     <div key={us.id}>            

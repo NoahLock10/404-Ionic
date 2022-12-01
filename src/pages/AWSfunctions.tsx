@@ -16,6 +16,7 @@ export async function getTableData() {
         method: 'GET'
     });
     const myJson = await response.json(); //extract JSON from the http response
+    console.log(response.status);
     console.log(myJson.Items);
     return myJson.Items;
 }
@@ -25,6 +26,7 @@ export async function getUsers() {
         method: 'GET'
     });
     const myJson = await response.json(); //extract JSON from the http response
+    console.log(response.status);
     console.log(myJson.Items);
     return myJson.Items;
 }
